@@ -1,0 +1,58 @@
+--2
+SET AUTOCOMMIT OFF
+--3
+INSERT INTO emp VALUES
+(100, 'Pawel', 'Antek', null, null, null, null, null, null, null, null);
+--4
+INSERT INTO emp VALUES
+(101, 'Lozov', 'Anatolii', null, TO_DATE('10-05-2015','DD-MM-YYYY'), null, null, null, null, 800, null);
+SELECT count (*) FROM emp;
+ROLLBACK;
+SELECT count (*) FROM emp;
+--5
+INSERT INTO emp VALUES
+(101, 'Lozov', 'Anatolii', null, TO_DATE('10-05-2015','DD-MM-YYYY'), null, null, null, null, 800, null);
+COMMIT;
+--6a
+UPDATE item SET price=(price+price*0.15);
+--6b
+SAVEPOINT S1;
+--6c
+SELECT SUM(price) FROM item;
+--6d
+UPDATE item SET price=(price+price*0.10);
+--6e
+SAVEPOINT S2;
+--6f
+SELECT SUM(price) FROM item;
+--6g
+UPDATE item SET price=(price+price*0.60);
+--6h
+SELECT SUM(price) FROM item;
+--6i
+ROLLBACk TO SAVEPOINT S2;
+--6j
+SELECT SUM(price) FROM item;
+--6k
+ROLLBACK TO SAVEPOINT S1;
+--6l
+SELECT SUM(price) FROM item;
+--6m
+COMMIT;
+--7
+SET AUTOCOMMIT ON;
+--8
+CREATE TABLE region_kopia 
+(id NUMBER(7),
+name VARCHAR2(50) );
+INSERT INTO region_kopia (id, name)
+SELECT id, name FROM region;
+SELECT * FROM region_kopia;
+--9Ÿle
+CREATE TABLE dept_kopia 
+(id NUMBER(7),
+name VARCHAR2(25) 
+region_id NUMBER(7));
+INSERT INTO dept_kopia (id, name, region_id)
+SELECT id, name, region_id FROM dept;
+SELECT * FROM dept_kopia

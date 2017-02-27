@@ -1,0 +1,89 @@
+/1
+SELECT 
+LOWER(last_name) "Nazwisko",
+LOWER(first_name)"Imie",
+INITCAP(userid) "Identyfikator",
+UPPER(title) "Stanowisko"
+FROM emp
+WHERE title LIKE 'VP%';
+/2
+SELECT
+first_name "Imie",
+last_name "Nazwisko",
+title "Stanowisko"
+FROM emp
+WHERE INITCAP (last_name) = INITCAP ('PATEL');
+/3
+SELECT
+CONCAT(
+CONCAT (name,'-'),country) "Nazwa i paсstwo"
+FROM customer
+WHERE credit_rating='GOOD';
+/4
+SELECT
+name "Nazwa", LENGTH(name) "LICZBA ZNAK”W"
+FROM product
+WHERE name LIKE 'Ace%';
+/5
+SELECT
+ROUND(41.5843,2)"SETNE", ROUND (41.5843,0)"CALKOWITE", 
+ROUND(41.5843,-1)"DZIESI•TKI"FROM DUAL;
+/6
+SELECT
+TRUNC(41.5843,2)"SETNE", TRUNC (41.5843,0)"CALKOWITE", 
+TRUNC(41.5843,-1)"DZIESI•TKI"FROM DUAL;
+/7
+SELECT
+last_name "Nazwisko",
+MOD(salary,commission_pct)"Reszta"
+FROM emp
+WHERE salary>1380;
+/7a
+SELECT
+last_name "Nazwisko",
+MOD(salary,commission_pct) "Reszta"
+FROM emp
+WHERE commission_pct NOT LIKE '(NULL)' AND salary>1380;
+/8
+SELECT SYSDATE "AKTUALNA DATA" FROM DUAL;
+/9
+SELECT
+last_name "NAZWISKO",
+ROUND(MONTHS_BETWEEN(SYSDATE,start_date)*31/7.0) "TYGODNIE"
+FROM emp
+WHERE dept_id LIKE'43';
+/10
+SELECT 
+id "ID", 
+ROUND(MONTHS_BETWEEN(SYSDATE,start_date))"Liczba miesiecy", 
+ADD_MONTHS(start_date,3) "Data Koсca Okresu Prуbnego" 
+FROM emp
+WHERE ROUND(MONTHS_BETWEEN(SYSDATE,start_date))<'284';
+/11
+SELECT
+product_id "Produkt",
+restock_date "Dostawa" ,
+NEXT_DAY(restock_date, 'piєtek') "Piatek po dostawie",
+LAST_DAY(restock_date)
+"Ostatni dzieс miesiєca" 
+FROM inventory 
+WHERE restock_date IS NOT NULL 
+ORDER BY product_id;
+/12
+SELECT 
+id "ID", 
+start_date "Data", 
+EXTRACT(MONTH FROM start_date) "Miesiєc" 
+FROM emp
+WHERE start_date LIKE '91%';
+/13
+SELECT id "ID",
+TO_CHAR(date_ordered,'MM/YY') "MM/RR" 
+FROM ord
+WHERE sales_rep_id='11';
+/14
+SELECT 
+last_name "Nazwisko", 
+TO_CHAR(start_date,'DD Month YYYY "roku"')"Data"
+FROM emp
+WHERE TO_CHAR(start_date,'YYYY') >= 1991;

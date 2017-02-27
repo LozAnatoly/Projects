@@ -1,0 +1,91 @@
+--1
+SELECT
+emp.first_name "Imie", 
+emp.last_name "Nazwisko", 
+dept.id "id", 
+dept.name "Nazwa departamentu"
+FROM emp, dept
+WHERE
+emp.dept_id=dept.id;
+--2
+SELECT
+dept.id "NR DEPARTAMENTU", 
+region.id "NR REGIONU", 
+region.name "Nazwa regionu"
+FROM dept, region
+WHERE
+dept.region_id=region.id;
+--3
+SELECT
+emp.first_name "Imie", 
+emp.last_name "Nazwisko", 
+dept.id "id", 
+dept.name "Nazwa departamentu"
+FROM emp, dept
+WHERE
+emp.dept_id=dept.id AND emp.last_name='Menchu';
+--4
+SELECT
+emp.last_name "Nazwisko", 
+region.name "Nazwa", 
+emp.commission_pct "Prowizja"
+FROM emp, region, dept
+WHERE 
+emp.commission_pct IS NOT NULL AND 
+emp.dept_id=dept.id AND 
+dept.region_id=region.id;
+--5
+SELECT
+NVL(TO_CHAR(emp.last_name),'-')  "Nazwisko", 
+NVL(TO_CHAR(emp.id),'-') ID ,
+customer.name "Nazwa klienta"
+FROM emp, customer
+WHERE 
+emp.id(+)=customer.sales_rep_id;
+--6
+SELECT
+e1.last_name||' pracuje dla '||e2.last_name "KTO DLA KOGO"
+FROM emp e1, emp e2
+WHERE 
+e2.id=e1.manager_id;
+--7
+SELECT
+customer.name "Nazwa klienta",
+emp.last_name "Nazwisko",
+ord.date_ordered "Data zamówienia",
+item.quantity "Liczba",
+product.name "Nazwa produktu"
+FROM customer,emp,ord,item,product
+WHERE 
+ord.id='101' AND
+customer.sales_rep_id=emp.id AND
+ord.customer_id=customer.id AND
+ord.id=item.ord_id AND
+product.id=item.product_id;
+--8
+SELECT
+customer.id "Numer Kilenta",
+customer.name "Nazwa Kilenta",
+NVL(TO_CHAR(ord.id),'-') "Numer Zamówienia"
+FROM customer,ord
+WHERE 
+ord.customer_id(+)=customer.id;
+--9
+SELECT 
+MAX(salary) "MAKSYMALNA", 
+MIN(salary) "MINIMALNA", 
+AVG(salary) "ŒREDNIA", 
+SUM(salary) "SUMA", 
+COUNT(salary) "LICZBA PRACOWNIKÓW" 
+FROM  emp;
+--10
+SELECT 
+MIN(last_name) "PIERWSZE NAZWISKO", 
+MAX(last_name) "OSTANIE NAZWISKO" 
+FROM emp;
+--11
+SELECT
+COUNT(commission_pct) "LICZBA PRCOWNIKÓW" 
+FROM emp 
+WHERE 
+dept_id = 31;

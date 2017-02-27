@@ -1,0 +1,105 @@
+/1 Podzapytanie o srednij pensji Warehouse Manager
+
+SELECT
+  first_name "Imie",
+  last_name "Nazwisko"
+FROM emp
+WHERE title = 'Stock Clerk'AND salary> (
+SELECT 
+  AVG(salary)
+FROM emp
+WHERE title = 'Warehouse Manager'
+);
+
+/2 Zwykle porownanie
+
+SELECT
+  first_name "Imie",
+  last_name "Nazwisko"
+FROM emp
+WHERE salary < 1300
+ORDER BY last_name ASC;
+
+/3  Podzapytanie o srednij pensji
+
+SELECT
+  COUNT(*)
+FROM emp
+WHERE salary < (SELECT AVG(salary) FROM emp);
+
+/4  Wyswietlanie pracownikow pracujacych wiecej niz 288 miesiacy (24 lata)
+
+SELECT
+  first_name,
+  last_name,
+  start_date
+FROM emp
+WHERE MONTHS_BETWEEN('15/03/01', start_date) >= 288
+ORDER BY start_date ASC;
+
+/5  Zlaczenie tabel emp i ord
+
+SELECT
+  emp.id,
+  SUM(ord.total)
+FROM emp
+JOIN ord ON ord.sales_rep_id=emp.id
+GROUP BY emp.id;
+
+/6  Podzapytanie o najwyzszej sumie zamowien
+
+SELECT
+  sales_rep_id
+FROM ord
+HAVING SUM(total) = (SELECT MAX(SUM(total)) FROM ord GROUP BY sales_rep_id)
+GROUP BY sales_rep_id;
+
+/7 Dolaczenie do poprzedniego zadania tabeli emp
+
+SELECT
+  ord.sales_rep_id,
+  emp.last_name
+FROM ord
+JOIN emp ON emp.id=ord.sales_rep_id
+HAVING SUM(ord.total) = (SELECT MAX(SUM(total)) FROM ord GROUP BY sales_rep_id)
+GROUP BY ord.sales_rep_id, emp.last_name;
+
+/8  Trywialne
+
+SELECT
+  start_date,
+  COUNT(*)
+FROM emp
+GROUP BY start_date
+ORDER BY start_date;
+
+/9 Wybieranie produktow ktorych nie ma w magazynach i maja uzasadnienie
+
+SELECT
+  product.name
+FROM product
+JOIN inventory ON product.id = inventory.product_id
+WHERE inventory.amount_in_stock = 0 AND inventory.out_of_stock_explanation IS NOT NULL;
+
+/10 zliczanie sumy produktow w magazynach
+
+SELECT
+  product.name
+FROM product
+JOIN inventory ON product.id = inventory.product_id
+HAVING SUM(inventory.amount_in_stock) < 500
+GROUP BY product.name;
+
+/11 Wybieranie produktow, ktorych dlugosc ze spacja jest dokladnie o 2 znaki dluzsza od jego wersji bez spacji.
+
+SELECT
+  name
+FROM product
+WHERE name = ANY(SELECT name FROM product WHERE LENGTH(name) - LENGTH(REPLACE(name, ' ', '')) = 2);
+
+
+/12 trywialne
+
+SELECT
+  date_ordered || ' ' || total "Daty i ich laczne wartosci"
+FROM ord;
